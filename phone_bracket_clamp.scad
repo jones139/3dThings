@@ -2,11 +2,11 @@
 
 use <../MCAD/nuts_and_bolts.scad>
 
-strut_dia = 20;	// mm:  diameter of the strut the bracket clamps to.
-hbar_dia = 20;   // mm:  diameter of the stub of 'handle bar' for the light.
+strut_dia = 23.5;	// mm:  diameter of the strut the bracket clamps to.
+hbar_dia = 22.5;   // mm:  diameter of the stub of 'handle bar' for the light.
 hbar_len = 4;   // mm:  the length of the stub of 'handlebar'
-bracket_th = 1.5;	//mm
-bracket_h  = 30;	//mm
+bracket_th = 3;	//mm
+bracket_h  = 22.5;	//mm
 clamp_w = 10;	//mm
 clamp_th = 10;	//mm
 cutout_th = 1;	//mm
