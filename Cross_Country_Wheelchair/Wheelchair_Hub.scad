@@ -25,18 +25,52 @@ bh_od = 5.7;   // diameter of brake holes in mm.
 bh_h  = 8.4;   // depth of brake holes in mm.
 bh_pcd = 50.0; // Pitch circle diameter of brake holes in mm.
 
+g_h = 5;      // height of spiggot
+g_od= 32.3;	  // diameter of the main spiggot.
+g_d = 1;       // depth of spiggott splines in mm.
+nSplines = 9;  // number of splines on the spiggott.
+
 tol = 0.1;   // tolerance in mm.
 
-rotate(180,[1,0,0])
+rotate(180,[1,0,0]) {
+	union() {
+		spiggot();
+		hub();
+	}
+}
+
+module spiggot() {
+		// spiggott
+		translate([0,0,h_h])
+			union() {
+				for (sn = [1:nSplines-1]) {
+					assign(ang = 2*sn*360/(2*nSplines)) {
+						rotate(ang,[0,0,1])
+							color("red") 
+								arc( g_d+tol, g_h, g_d+g_od/2-tol, 360/(2*nSplines) );
+					}
+				}
+				color("green")
+					difference() { 
+						cylinder(r=g_od/2,h=g_h);
+						translate([0,0,-1*tol])
+							cylinder(r=b_od/2,h=g_h+2*tol);
+					}
+			}
+}
+
+module hub() {
 difference() {
-	// main cylinder
-	cylinder(r=h_od/2,h=h_h);
+	union() {
+		// main cylinder
+		cylinder(r=h_od/2,h=h_h);
+	}
 	// axle hole
 	translate([0,0,-1*tol])
 		cylinder(r=h_id/2, h=h_h+2*tol);
 	// Bearing hole
 	translate([0,0,h_h-b_th])
-		color("red") cylinder(r=b_od/2,h=b_th+tol);
+		color("red") cylinder(r=b_od/2,h=b_th+g_h+tol);
 	// Wheel hub rebate
 	translate([0,0,-1*tol]) difference() {
 		color("blue") cylinder(r=r_od/2,h=r_th+tol);
@@ -61,4 +95,40 @@ difference() {
 		}
 	}
 
+}
+}
+
+
+/* 
+ * Excerpt from... 
+ * 
+ * Parametric Encoder Wheel 
+ *
+ * by Alex Franke (codecreations), March 2012
+ * http://www.theFrankes.com
+ * 
+ * Licenced under Creative Commons Attribution - Non-Commercial - Share Alike 3.0 
+*/
+ 
+module arc( height, depth, radius, degrees ) {
+    // This dies a horible death if it's not rendered here 
+    // -- sucks up all memory and spins out of control 
+    render() {
+        difference() {
+            // Outer ring
+            rotate_extrude($fn = 100)
+                translate([radius - height, 0, 0])
+                    square([height,depth]);
+         
+            // Cut half off
+            translate([0,-(radius+1),-.5]) 
+                cube ([radius+1,(radius+1)*2,depth+1]);
+         
+            // Cover the other half as necessary
+            rotate([0,0,180-degrees])
+            translate([0,-(radius+1),-.5]) 
+                cube ([radius+1,(radius+1)*2,depth+1]);
+         
+        }
+    }
 }
