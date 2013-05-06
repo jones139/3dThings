@@ -25,7 +25,7 @@ bh_od = 5.7;   // diameter of brake holes in mm.
 bh_h  = 8.4;   // depth of brake holes in mm.
 bh_pcd = 50.0; // Pitch circle diameter of brake holes in mm.
 
-g_h = 5;      // height of spiggot
+g_h = 7;      // height of spiggot
 g_od= 32.3;	  // diameter of the main spiggot.
 g_d = 1;       // depth of spiggott splines in mm.
 nSplines = 9;  // number of splines on the spiggott.
